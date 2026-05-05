@@ -6,12 +6,13 @@ import android.view.*;
 import android.view.inputmethod.*;
 import android.widget.*;
 import java.io.*;
+import java.lang.*;
 
 public class A0 extends Activity {
     ScrollView scroll;
     TextView output;
     EditText input;
-    Process shell;
+    java.lang.Process shell;
     OutputStream stdin;
 
     @Override public void onCreate(Bundle b) {
@@ -40,7 +41,7 @@ public class A0 extends Activity {
         input.setHint("$");
         input.setHintTextColor(0xFF005500);
         input.setSingleLine(true);
-        input.setOnEditorActionListener((v,a,e)->{runCmd();return true;});
+        input.setOnEditorActionListener((v,act,ev)->{runCmd();return true;});
         root.addView(input);
         setContentView(root);
 
@@ -53,27 +54,28 @@ public class A0 extends Activity {
             shell = Runtime.getRuntime().exec(new String[]{"/system/bin/sh","-l"});
             stdin = shell.getOutputStream();
             new Thread(()->{
-                try(BufferedReader r=new BufferedReader(new InputStreamReader(shell.getInputStream()))){
+                try { BufferedReader r=new BufferedReader(new InputStreamReader(shell.getInputStream()));
                     String l; while((l=r.readLine())!=null) append(l);
-                }catch(Exception e){}
+                } catch(Exception e){}
             }).start();
             new Thread(()->{
-                try(BufferedReader r=new BufferedReader(new InputStreamReader(shell.getErrorStream()))){
+                try { BufferedReader r=new BufferedReader(new InputStreamReader(shell.getErrorStream()));
                     String l; while((l=r.readLine())!=null) append(l);
-                }catch(Exception e){}
+                } catch(Exception e){}
             }).start();
             append("[a0] terminal ready");
-        }catch(Exception e){append("error: "+e.getMessage());}
+        } catch(Exception e) { append("error: "+e.getMessage()); }
     }
 
     void runCmd() {
         String cmd=input.getText().toString();
         input.setText("");
         append("$ "+cmd);
-        try{stdin.write((cmd+"\n").getBytes());stdin.flush();}catch(Exception e){append("err: "+e.getMessage());}
+        try { stdin.write((cmd+"\n").getBytes()); stdin.flush(); }
+        catch(Exception e) { append("err: "+e.getMessage()); }
     }
 
     void append(String t) {
-        runOnUiThread(()->{output.append(t+"\n");scroll.post(()->scroll.fullScroll(ScrollView.FOCUS_DOWN));});
+        runOnUiThread(()->{ output.append(t+"\n"); scroll.post(()->scroll.fullScroll(ScrollView.FOCUS_DOWN)); });
     }
 }
