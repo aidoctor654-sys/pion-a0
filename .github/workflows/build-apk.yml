@@ -1,4 +1,4 @@
-name: Build PION APK
+name: Build a0 APK
 
 on:
   push:
@@ -20,19 +20,31 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Accept Android licenses
+      - name: Accept licenses
         run: yes | sdkmanager --licenses 2>/dev/null || true
 
-      - name: Make gradlew executable
-        run: chmod +x apk/gradlew
+      - name: Install Android platform
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Create local.properties
+        working-directory: apk
+        run: echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
+
+      - name: Make gradlew
+        working-directory: apk
+        run: |
+          cat > gradlew << 'GRADLEW'
+          #!/bin/sh
+          exec gradle "$@"
+          GRADLEW
+          chmod +x gradlew
 
       - name: Build Debug APK
         working-directory: apk
-        run: ./gradlew assembleDebug --no-daemon
+        run: gradle assembleDebug --no-daemon --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: pion-a0-debug
+          name: a0-debug
           path: apk/app/build/outputs/apk/debug/*.apk
-
