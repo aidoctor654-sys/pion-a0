@@ -1,4 +1,4 @@
-plugins { id('com.android.application') }
+apply plugin: 'com.android.application'
 android {
     namespace 'pion.api'
     compileSdk 35
@@ -9,7 +9,7 @@ android {
         versionCode 1
         versionName "0.2"
     }
-    buildTypes { release { minifyEnabled false } }
-    compileOptions { sourceCompatibility JavaVersion.VERSION_17 targetCompatibility JavaVersion.VERSION_17 }
+    buildTypes { release { minifyEnabled false } debug { minifyEnabled false } }
+    compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
 }
 dependencies {}
