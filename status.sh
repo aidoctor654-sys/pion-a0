@@ -1,7 +1,19 @@
 #!/data/data/com.termux/files/usr/bin/bash
-PORT="${1:-8421}"
-echo "=== PION π-1 Status ==="
-echo "  proot Debian: $(proot-distro login debian -- bash -c 'uname -m' 2>/dev/null || echo 'not running')"
-echo "  Python: $(proot-distro login debian -- bash -c 'source ~/agent-zero/.venv/bin/activate && python3 --version' 2>/dev/null || echo 'not found')"
-echo "  Agent Zero: $(proot-distro login debian -- bash -c 'ls ~/agent-zero/agent.py' 2>/dev/null || echo 'not found')"
-echo "  Port $PORT: $(curl -s -o /dev/null -w '%{http_code}' http://localhost:$PORT 2>/dev/null || echo 'not responding')"
+echo "═══════════════════════════════════"
+echo "  PION π-1 · Status"
+echo "═══════════════════════════════════"
+echo ""
+echo -n "  Wrapper API :8423  → " && curl -s http://localhost:8423/ping 2>/dev/null || echo "OFFLINE"
+echo -n "  Hermes Body :8422  → " && curl -s -o /dev/null -w "%{http_code}" http://localhost:8422 2>/dev/null || echo "OFFLINE"
+echo ""
+echo -n "  Agent Zero  :8421  → "
+A0=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8421 2>/dev/null)
+if [ "$A0" = "200" ] || [ "$A0" = "404" ]; then echo "ONLINE"; else echo "OFFLINE"; fi
+echo ""
+echo "  Disk:"
+df -h /data 2>/dev/null | tail -1
+echo ""
+echo "  Debian proot:"
+ls /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/debian/root/agent-zero/agent.py >/dev/null 2>&1 && echo "  ✅ Agent Zero installed" || echo "  ❌ Agent Zero not found"
+proot-distro list 2>/dev/null | grep debian && echo "  ✅ Debian" || echo "  ❌ Debian"
+echo "═══════════════════════════════════"
