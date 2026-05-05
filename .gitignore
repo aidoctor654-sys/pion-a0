@@ -1,0 +1,10 @@
+*.pyc
+__pycache__/
+.venv/
+node_modules/
+*.tar.gz
+*.qcow2
+*.apk
+build/
+.gradle/
+local.properties
