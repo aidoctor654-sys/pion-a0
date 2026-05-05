@@ -40,7 +40,7 @@
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
         android:requestLegacyExternalStorage="true">
 
-        <activity android:name=".A0" android:exported="true"
+        <activity android:name="a0.term.A0" android:exported="true"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -49,8 +49,8 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".A0Service" android:foregroundServiceType="dataSync"/>
-        <receiver android:name=".A0Boot" android:exported="true">
+        <service android:name="a0.term.A0Service" android:foregroundServiceType="dataSync"/>
+        <receiver android:name="a0.term.A0Boot" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>

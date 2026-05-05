@@ -2,10 +2,10 @@ plugins {
     id("com.android.application")
 }
 android {
-    namespace = "a0"
+    namespace = "a0.term"
     compileSdk = 35
     defaultConfig {
-        applicationId = "a0"
+        applicationId = "a0.term"
         minSdk = 28
         targetSdk = 35
         versionCode = 1

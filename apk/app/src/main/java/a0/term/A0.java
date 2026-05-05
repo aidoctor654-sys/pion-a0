@@ -1,4 +1,4 @@
-package a0;
+package a0.term;
 import android.app.*;
 import android.content.*;
 import android.os.*;
